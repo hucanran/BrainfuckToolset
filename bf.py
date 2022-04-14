@@ -5,36 +5,64 @@ VERSION = "0.0.0"
 
 # 全局变量------------------------------
 code = ""  # 代码
-RAM = [0, ]  # 内存
+memory = [0, ]  # 内存
 codePoint = 0  # 当前代码的地址
-RAMPoint = 0  # 当前内存的地址
+memoryPoint = 0  # 当前内存的地址
+stackOfBrackets = []
+runFlag = 1
 
 
 # 函数--------------------------------
 def run():
-    while codePoint <= len(code):
+    global code, memory, codePoint, memoryPoint, stackOfBrackets
+    while codePoint < len(code):
         c = code[codePoint]
         if c == "+":
-            while len(RAM) >= RAMPoint:
-                RAM.append(0)
-            RAM[RAMPoint] += 1
-            RAM[RAMPoint] %= 255
+            while len(memory) < memoryPoint + 1:
+                memory.append(0)
+            memory[memoryPoint] += 1
+            memory[memoryPoint] %= 255
         if c == "-":
-            while len(RAM) >= RAMPoint:
-                RAM.append(0)
-            RAM[RAMPoint] -= 1
-            RAM[RAMPoint] %= 255
+            while len(memory) < memoryPoint + 1:
+                memory.append(0)
+            memory[memoryPoint] -= 1
+            memory[memoryPoint] %= 255
         if c == ".":
-            print(chr(RAM[RAMPoint]))
+            print(chr(memory[memoryPoint]), end="")
         if c == ",":
-            RAM[RAMPoint] = ord(input())
+            memory[memoryPoint] = ord(input())
         if c == "<":
-            if RAMPoint == 0:
+            if memoryPoint == 0:
                 print("BF Error '{}' index:{} :illegal operation")
                 return
+            else:
+                memoryPoint -= 1
         if c == ">":
-            RAMPoint += 1
-            if RAM < RAMPoint:RAM.append(0)
+            memoryPoint += 1
+            if len(memory) < memoryPoint + 1:
+                memory.append(0)
+        if c == "[":
+            stackOfBrackets.append(codePoint)
+            if memory[memoryPoint] == 0:
+                while len(stackOfBrackets) != 0:
+                    codePoint += 1
+                    if code[codePoint] == "[":
+                        stackOfBrackets.append(codePoint)
+                    if code[codePoint] == "]":
+                        if len(stackOfBrackets) > 0:
+                            stackOfBrackets.pop()
+                            codePoint += 1
+                            continue
+                        else:
+                            print("BF Error: ']' index:{} :illegal operation".format(codePoint))
+                            return
+                continue
+        if c == "]":
+            if len(stackOfBrackets) > 0:
+                codePoint = stackOfBrackets.pop() - 1
+            else:
+                print("BF Error: ']' index:{} :illegal operation".format(codePoint))
+        codePoint += 1
 
 
 if __name__ == '__main__':
@@ -43,13 +71,14 @@ if __name__ == '__main__':
         print("BF log: {}".format(VERSION))
     if total == 2:
         ss = sys.argv[1]
-        if ss[0] != "-" and ss[-3:-1] == ".bf":  # file
+        if ss[0] != "-" and ss[-3:] == ".bf":  # file
             try:
                 file = open(ss, "r")
-                code = file.read()
             except:
                 print("BF Error: no file named {}".format(ss))
             else:
+                code = file.read()
+                file.close()
                 run()
         if ss == "-v":
             print(VERSION)
