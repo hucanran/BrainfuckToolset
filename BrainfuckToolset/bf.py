@@ -1,7 +1,7 @@
 import sys
 
 # 常量----------------------------------
-VERSION = "1.0.0"
+VERSION = "1.0.1"
 
 # 全局变量------------------------------
 code = ""  # 代码
@@ -74,11 +74,14 @@ if __name__ == '__main__':
         if ss[0] != "-" and ss[-3:] == ".bf":  # file
             try:
                 file = open(ss, "r")
-            except:
+            except FileNotFoundError:
                 print("BF Error: no file named {}".format(ss))
             else:
                 code = file.read()
                 file.close()
-                run()
+                try:
+                    run()
+                except:
+                    print("BF Error: Error")
         if ss == "-v":
             print(VERSION)
