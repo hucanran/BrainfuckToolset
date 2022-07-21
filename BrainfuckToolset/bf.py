@@ -1,7 +1,8 @@
 import sys
+import printer as pr
 
 # 常量----------------------------------
-VERSION = "1.1,0"
+VERSION = "1.1.0"
 
 # 全局变量------------------------------
 code = ""  # 代码
@@ -32,16 +33,12 @@ def run():
         if c == ",":
             i = input()
             if len(i) > 1:
-                print('\033[1;31m')
-                print("BF Error :illegal input")
-                print('\033[0m')
+                pr.errorPrint("BF Error")
             else:
                 memory[memoryPoint] = ord(i)
         if c == "<":
             if memoryPoint == 0:
-                print('\033[0m')
-                print("BF Error '{}' index:{} :illegal operation")
-                print('\033[0m')
+                pr.errorPrint("BF Error '{}' index:{} :illegal operation")
                 return
             else:
                 memoryPoint -= 1
@@ -62,42 +59,30 @@ def run():
                             codePoint += 1
                             continue
                         else:
-                            print('\033[0m')
-                            print("BF Error: ']' index:{} :illegal operation".format(codePoint))
-                            print('\033[0m')
+                            pr.errorPrint("BF Error: ']' index:{} :illegal operation".format(codePoint))
                             return
                 continue
         if c == "]":
             if len(stackOfBrackets) > 0:
                 codePoint = stackOfBrackets.pop() - 1
             else:
-                print('\033[0m')
-                print("BF Error: ']' index:{} :illegal operation".format(codePoint))
-                print('\033[0m')
+                pr.errorPrint("BF Error: ']' index:{} :illegal operation".format(codePoint))
         codePoint += 1
 
 
 if __name__ == '__main__':
     total = len(sys.argv)
     if total == 1:
-        print("BF log: {}".format(VERSION))
+        pr.logPrint("BF log: {}".format(VERSION))
     if total == 2:
         ss = sys.argv[1]
-        if ss[0] != "-" and ss[-3:] == ".bf":  # file
+        if ss[-3:] == ".bf":
+            file = open(ss, "r")
+            code = file.read()
+            file.close()
             try:
-                file = open(ss, "r")
-            except FileNotFoundError:
-                print('\033[0m')
-                print("BF Error: no file named {}".format(ss))
-                print('\033[0m')
-            else:
-                code = file.read()
-                file.close()
-                try:
-                    run()
-                except:
-                    print('\033[0m')
-                    print("BF Error: Error")
-                    print('\033[0m')
+                run()
+            except:
+                pr.errorPrint("BF Error: Error")
         if ss == "-v":
             print(VERSION)
