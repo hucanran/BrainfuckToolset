@@ -5,10 +5,10 @@ import printer as pr
 VERSION = "1.1.0"
 
 # 全局变量------------------------------
-code = ""  # 代码
-memory = [0, ]  # 内存
-codePoint = 0  # 当前代码的地址
-memoryPoint = 0  # 当前内存的地址
+code = ""
+memory = [0, ]
+codePoint = 0
+memoryPoint = 0
 stackOfBrackets = []
 runFlag = 1
 
