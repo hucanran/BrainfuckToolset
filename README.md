@@ -1,4 +1,4 @@
-# Brainfuck
+# BrainfuckToolset
 一款Brainfuck的工具集(版本：v2.0)
 
 ## 快速入门
@@ -76,3 +76,10 @@ $ ./bf ../example/HelloWorld.bf
 循环结尾时指针所在的字节为0则跳出循环
 
 否则则跳转到循环头继续 
+
+
+## TODO
+[x]Brainfuck解释器
+[ ]Brainfuck转python
+[ ]Brainfuck转c++
+[ ]Brainfuck解释器
