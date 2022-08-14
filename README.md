@@ -11,6 +11,16 @@
 $ sudo apt install git cmake g++
 ```
 
+**Windows**
+
+~~反正需要git、g++、cmake~~
+
+~~您看着办吧~~
+
+**Mac**
+
+~~同上~~
+
 ### 下载
 
 ```bash
@@ -43,7 +53,7 @@ $ ./bf ../example/HelloWorld.bf
 ```
 
 ## 什么是Brainfuck
-> Brainfuck是一种极小化的计算机语言，它是由Urban Müller在1993年创建的。由于fuck在英语中是脏话，这种语言有时被称为brainf*ck或brainf**k，甚至被简称为BF。
+> Brainfuck是一种极小化的计算机语言，它是由Urban Müller在1993年创建的。
 
 ——《百度百科》
 
